@@ -28,15 +28,6 @@ public class OrderDetail {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime orderDate;
 
-    @Column(name = "total_payment")
-    private Double paymentTotal;
-
-    @Column(name = "pay")
-    private Double pay;
-
-    @Column(name = "change_pay")
-    private Double change;
-
     @OneToMany
     private List<Order> order;
 
