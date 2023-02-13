@@ -29,4 +29,8 @@ public class Payment {
     @Column(name = "change_pay")
     private Double change;
 
+    @ManyToOne
+    @JoinColumn(name = "tables_id")
+    private Tables tables;
+
 }

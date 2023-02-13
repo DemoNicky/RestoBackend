@@ -33,10 +33,6 @@ public class Order {
     @Column(name = "total_pay")
     private Double payTotal;
 
-    @Column(name = "order_status")
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus = OrderStatus.NOT_PAID;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "menu_id")
     private Menu menu;

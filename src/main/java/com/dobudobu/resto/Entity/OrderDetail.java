@@ -28,12 +28,12 @@ public class OrderDetail {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime orderDate;
 
+    @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus = OrderStatus.NOT_PAID;
+
     @OneToMany
     private List<Order> order;
-
-    @ManyToOne
-    @JoinColumn(name = "tables_id")
-    private Tables tables;
 
     @ManyToOne
     @JoinColumn(name = "users_id")
