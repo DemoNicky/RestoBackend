@@ -33,4 +33,8 @@ public class Payment {
     @JoinColumn(name = "tables_id")
     private Tables tables;
 
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private User users;
+
 }
