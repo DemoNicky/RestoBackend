@@ -24,18 +24,25 @@ public class OrderDetail {
     @GeneratedValue(generator = "uuid")
     private String id;
 
+    @Column(name = "total_payment")
+    private Double paymentTotal;
+
     @Column(name = "order_date")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime orderDate;
 
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus = OrderStatus.NOT_PAID;
+    private OrderStatus paymentStatus = OrderStatus.NOT_PAID;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "order_and_detail_table",
+            joinColumns = {@JoinColumn(name = "order_detail_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_id")}
+    )
     private List<Order> order;
 
-    @ManyToOne
-    @JoinColumn(name = "users_id")
-    private User users;
+//    @ManyToOne
+//    @JoinColumn(name = "users_id")
+//    private User users;
 }

@@ -33,6 +33,10 @@ public class Payment {
     @JoinColumn(name = "tables_id")
     private Tables tables;
 
+    @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     @ManyToOne
     @JoinColumn(name = "users_id")
     private User users;

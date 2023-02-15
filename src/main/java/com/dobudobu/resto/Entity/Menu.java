@@ -38,7 +38,7 @@ public class Menu {
     @JoinColumn(name = "image_id",referencedColumnName = "id")
     private ImageData image;
 
-    private Boolean status = Boolean.TRUE;
+    private Boolean status;
 
 
 }

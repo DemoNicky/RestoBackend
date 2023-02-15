@@ -44,6 +44,7 @@ public class MenuService {
                 price(price).
                 category(category).
                 image(imageData).
+                status(Boolean.FALSE).
                 build();
 
         menuRepository.save(menu);
