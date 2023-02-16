@@ -1,5 +1,7 @@
 package com.dobudobu.resto.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +26,7 @@ public class ImageData {
 
     @Lob
     @Column(name = "menu_image", length = 999999999)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private byte[] menuImage;
 
 }

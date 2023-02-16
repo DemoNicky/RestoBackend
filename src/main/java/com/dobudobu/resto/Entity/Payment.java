@@ -37,8 +37,10 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "users_id")
-    private User users;
+//    @ManyToOne
+//    @JoinColumn(name = "users_id")
+//    private User users;
 
+    @OneToOne
+    private OrderDetail orderDetail;
 }
