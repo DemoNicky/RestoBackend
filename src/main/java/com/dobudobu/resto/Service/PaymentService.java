@@ -41,7 +41,8 @@ public class PaymentService {
         Double change = paymentCount(paymentDto, orderDetail);
 
         //json response
-        PaymentResponseDto paymentResponseDto = getPaymentResponseDto(paymentDto, tablesdes, orderDetail, change);
+        PaymentResponseDto paymentResponseDto =
+                getPaymentResponseDto(paymentDto, tablesdes, orderDetail, change);
 
         //payment object
         Payment payment = new Payment();
@@ -52,6 +53,7 @@ public class PaymentService {
         payment.setOrderStatus(OrderStatus.PAID);
         payment.setOrderDetail(orderDetail);
 
+        paymentRepository.save(payment);
         return paymentResponseDto;
     }
 
