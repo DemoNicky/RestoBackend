@@ -1,4 +1,4 @@
-package com.dobudobu.resto.Controller.Auth;
+package com.dobudobu.resto.Controller;
 
 import com.dobudobu.resto.Dto.AuthenticationRequestDto;
 import com.dobudobu.resto.Dto.AuthenticationResponseDto;
