@@ -11,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,6 +28,18 @@ public class OrderDetailService {
 
     public void createOrder(List<OrderDetailDto> orderDetailDto) {
 
+        //mengecek apakah ada obejck yang duplikat atau tidak
+        checkDuplicateObject(orderDetailDto);
+
+//        orderDetailDtos.stream().collect(Collectors.groupingBy(Function.identity(),
+//                Collectors.counting()))
+//                .entrySet().stream().filter(e -> e.getKey().getMenuId() > 1L)
+//                .map(e -> e.getKey())
+//                .collect(Collectors.toList())
+//                .forEach(orderDetailDto1 -> {
+//                    throw new RuntimeException("duplicate object");
+//                });
+
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrderDate(LocalDateTime.now());
 
@@ -37,6 +50,15 @@ public class OrderDetailService {
         orderDetail.setOrder(orders);
 
         orderDetailRepository.save(orderDetail);
+    }
+
+    private void checkDuplicateObject(List<OrderDetailDto> orderDetailDto) {
+        HashSet unique = new HashSet();
+        for (OrderDetailDto s : orderDetailDto) {
+            if (!unique.add(s.getMenuId())){
+                throw new RuntimeException("duplicate object");
+            }
+        }
     }
 
     private Double getaDouble(List<Order> orders) {

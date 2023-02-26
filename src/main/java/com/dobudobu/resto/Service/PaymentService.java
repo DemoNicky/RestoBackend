@@ -71,6 +71,9 @@ public class PaymentService {
     private OrderDetail getOrderDetail(PaymentDto paymentDto) {
         OrderDetail orderDetail = orderDetailRepository.findById(paymentDto.getOrderDetailId()).orElseThrow(
                 () -> new RuntimeException("orders id not found"));
+        if (orderDetail.getPaymentStatus().equals(OrderStatus.PAID)){
+            throw new RuntimeException("request di batalkan karna barang sudah di bayar");
+        }
         return orderDetail;
     }
 
