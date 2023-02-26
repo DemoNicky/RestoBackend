@@ -51,6 +51,7 @@ public class PaymentService {
         payment.setChange(change);
         payment.setTables(tablesdes);
         payment.setOrderStatus(OrderStatus.PAID);
+        payment.getOrderDetail().setPaymentStatus(OrderStatus.PAID);
         payment.setOrderDetail(orderDetail);
 
         paymentRepository.save(payment);
