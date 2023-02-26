@@ -4,6 +4,7 @@ import com.dobudobu.resto.Dto.OrderDetailDto;
 import com.dobudobu.resto.Entity.Menu;
 import com.dobudobu.resto.Entity.Order;
 import com.dobudobu.resto.Entity.OrderDetail;
+import com.dobudobu.resto.Entity.OrderStatus;
 import com.dobudobu.resto.Repository.MenuRepository;
 import com.dobudobu.resto.Repository.OrderDetailRepository;
 import jakarta.transaction.Transactional;
@@ -45,7 +46,7 @@ public class OrderDetailService {
 
         List<Order> orders = getOrders(orderDetailDto);
         Double x = getaDouble(orders);
-
+        orderDetail.setPaymentStatus(OrderStatus.NOT_PAID);
         orderDetail.setPaymentTotal(x);
         orderDetail.setOrder(orders);
 

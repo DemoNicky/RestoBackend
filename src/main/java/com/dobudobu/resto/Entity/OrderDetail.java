@@ -33,7 +33,7 @@ public class OrderDetail {
 
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
-    private OrderStatus paymentStatus = OrderStatus.NOT_PAID;
+    private OrderStatus paymentStatus;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "order_and_detail_table",
