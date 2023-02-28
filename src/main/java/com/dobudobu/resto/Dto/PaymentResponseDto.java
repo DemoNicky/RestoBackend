@@ -1,9 +1,9 @@
 package com.dobudobu.resto.Dto;
 
 import com.dobudobu.resto.Entity.OrderDetail;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.dobudobu.resto.Entity.User;
+import jakarta.persistence.ManyToOne;
+import lombok.*;
 
 @Getter
 @Setter
@@ -17,6 +17,8 @@ public class PaymentResponseDto {
     private Double change;
 
     private String tableNumber;
+
+    private String user;
 
     private OrderDetail orderDetail;
 

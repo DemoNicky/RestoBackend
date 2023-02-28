@@ -2,17 +2,20 @@ package com.dobudobu.resto.Service;
 
 import com.dobudobu.resto.Dto.PaymentDto;
 import com.dobudobu.resto.Dto.PaymentResponseDto;
-import com.dobudobu.resto.Entity.OrderDetail;
-import com.dobudobu.resto.Entity.OrderStatus;
-import com.dobudobu.resto.Entity.Payment;
-import com.dobudobu.resto.Entity.Tables;
+import com.dobudobu.resto.Entity.*;
 import com.dobudobu.resto.Repository.OrderDetailRepository;
 import com.dobudobu.resto.Repository.PaymentRepository;
 import com.dobudobu.resto.Repository.TableRepository;
+import com.dobudobu.resto.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -29,7 +32,11 @@ public class PaymentService {
     @Autowired
     private TableRepository tableRepository;
 
-    public PaymentResponseDto paymentOrder(PaymentDto paymentDto) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public PaymentResponseDto paymentOrder(PaymentDto paymentDto){
+
 
         //get table obejct
         Tables tablesdes = getTables();
@@ -37,34 +44,48 @@ public class PaymentService {
         //get order detail object
         OrderDetail orderDetail = getOrderDetail(paymentDto);
 
+        //get user
+        User user = getUser();
+
         //count logic
         Double change = paymentCount(paymentDto, orderDetail);
 
         //json response
         PaymentResponseDto paymentResponseDto =
-                getPaymentResponseDto(paymentDto, tablesdes, orderDetail, change);
+                getPaymentResponseDto(paymentDto, tablesdes, orderDetail, change, user.getFirstName());
 
         //payment object
         Payment payment = new Payment();
         payment.setPaymentTotal(orderDetail.getPaymentTotal());
         payment.setPay(paymentDto.getPay());
         payment.setChange(change);
+        payment.setPaymentDate(LocalDateTime.now());
         payment.setTables(tablesdes);
         payment.setOrderStatus(OrderStatus.PAID);
         payment.setOrderDetail(orderDetail);
         payment.getOrderDetail().setPaymentStatus(OrderStatus.PAID);
+        payment.setUsers(user);
 
         paymentRepository.save(payment);
         return paymentResponseDto;
     }
 
-    private PaymentResponseDto getPaymentResponseDto(PaymentDto paymentDto, Tables tablesdes, OrderDetail orderDetail, Double change) {
+    private User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(
+                () -> new UsernameNotFoundException("user not found"));
+        return user;
+    }
+
+    private PaymentResponseDto getPaymentResponseDto(PaymentDto paymentDto, Tables tablesdes,
+                                                     OrderDetail orderDetail, Double change, String user) {
         PaymentResponseDto paymentResponseDto = PaymentResponseDto.builder()
                 .paymentTotal(orderDetail.getPaymentTotal())
                 .pay(paymentDto.getPay())
                 .change(change)
                 .tableNumber(tablesdes.getTableNumber())
                 .orderDetail(orderDetail)
+                .user(user)
                 .build();
         return paymentResponseDto;
     }

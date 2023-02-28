@@ -1,11 +1,14 @@
 package com.dobudobu.resto.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -29,6 +32,10 @@ public class Payment {
     @Column(name = "change_pay")
     private Double change;
 
+    @Column(name = "payment_date")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime paymentDate;
+
     @ManyToOne
     @JoinColumn(name = "tables_id")
     private Tables tables;
@@ -37,9 +44,9 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-//    @ManyToOne
-//    @JoinColumn(name = "users_id")
-//    private User users;
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private User users;
 
     @OneToOne
     private OrderDetail orderDetail;

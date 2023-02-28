@@ -1,14 +1,15 @@
 package com.dobudobu.resto.Service;
 
 import com.dobudobu.resto.Dto.OrderDetailDto;
-import com.dobudobu.resto.Entity.Menu;
-import com.dobudobu.resto.Entity.Order;
-import com.dobudobu.resto.Entity.OrderDetail;
-import com.dobudobu.resto.Entity.OrderStatus;
+import com.dobudobu.resto.Dto.OrderDetailResponseDto;
+import com.dobudobu.resto.Entity.*;
 import com.dobudobu.resto.Repository.MenuRepository;
 import com.dobudobu.resto.Repository.OrderDetailRepository;
+import com.dobudobu.resto.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,7 +28,10 @@ public class OrderDetailService {
     @Autowired
     private MenuRepository menuRepository;
 
-    public void createOrder(List<OrderDetailDto> orderDetailDto) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public OrderDetailResponseDto createOrder(List<OrderDetailDto> orderDetailDto) {
 
         //mengecek apakah ada obejck yang duplikat atau tidak
         checkDuplicateObject(orderDetailDto);
@@ -51,6 +55,15 @@ public class OrderDetailService {
         orderDetail.setOrder(orders);
 
         orderDetailRepository.save(orderDetail);
+
+        OrderDetailResponseDto orderDetailResponseDto = getOrderDetailResponseDto(orderDetail);
+        return orderDetailResponseDto;
+    }
+
+    private OrderDetailResponseDto getOrderDetailResponseDto(OrderDetail orderDetail) {
+        OrderDetailResponseDto orderDetailResponseDto = new OrderDetailResponseDto();
+        orderDetailResponseDto.setQrQode(orderDetail.getId());
+        return orderDetailResponseDto;
     }
 
     private void checkDuplicateObject(List<OrderDetailDto> orderDetailDto) {
@@ -74,7 +87,6 @@ public class OrderDetailService {
     private List<Order> getOrders(List<OrderDetailDto> orderDetailDto) {
         List<Order> orders = orderDetailDto.stream().map((p) -> {
             Order order = new Order();
-            order.setUsername(p.getUsername());
             order.setOrderQuantity(p.getOrderQuantity());
             Menu menu = getMenu(p, order);
             Double payTotal = p.getOrderQuantity() * menu.getPrice();

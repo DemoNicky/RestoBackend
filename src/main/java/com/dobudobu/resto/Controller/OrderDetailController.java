@@ -1,6 +1,7 @@
 package com.dobudobu.resto.Controller;
 
 import com.dobudobu.resto.Dto.OrderDetailDto;
+import com.dobudobu.resto.Dto.OrderDetailResponseDto;
 import com.dobudobu.resto.Entity.OrderDetail;
 import com.dobudobu.resto.Service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ public class OrderDetailController {
     private OrderDetailService orderDetailService;
 
     @PostMapping
-    public ResponseEntity<Void> insertOrder(@RequestBody List<OrderDetailDto> orderDetailDto){
-        orderDetailService.createOrder(orderDetailDto);
-        return ResponseEntity.created(URI.create("created")).build();
+    public ResponseEntity<OrderDetailResponseDto> insertOrder(@RequestBody List<OrderDetailDto> orderDetailDto){
+        OrderDetailResponseDto orderDetailResponseDto = orderDetailService.createOrder(orderDetailDto);
+        return ResponseEntity.ok(orderDetailResponseDto);
     }
 
     @GetMapping

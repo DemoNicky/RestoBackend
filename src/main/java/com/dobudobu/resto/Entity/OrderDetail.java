@@ -42,7 +42,5 @@ public class OrderDetail {
     )
     private List<Order> order;
 
-//    @ManyToOne
-//    @JoinColumn(name = "users_id")
-//    private User users;
+
 }

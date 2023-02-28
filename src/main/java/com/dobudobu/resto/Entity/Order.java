@@ -25,8 +25,6 @@ public class Order {
     @GeneratedValue(generator = "uuid")
     private String id;
 
-    private String username;
-
     @Column(name = "total_quantity")
     private int orderQuantity;
 

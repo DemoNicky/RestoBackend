@@ -10,9 +10,6 @@ import lombok.Setter;
 @Setter
 public class OrderDto {
 
-    @NotNull(message = "username cant be null")
-    private String username;
-
     @NotNull(message = "order Quantity cant be null")
     @Min(1)
     private int orderQuantity;

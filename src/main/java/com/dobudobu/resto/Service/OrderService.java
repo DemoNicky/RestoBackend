@@ -35,7 +35,6 @@ public class OrderService {
         List<Order> orders = orderDto.stream().map((p) ->{
 
             Order order = new Order();
-            order.setUsername(p.getUsername());
             order.setOrderQuantity(p.getOrderQuantity());
 
             Menu menu = menuRepository.findById(p.getMenuId()).orElseThrow(
