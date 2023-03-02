@@ -1,6 +1,7 @@
 package com.dobudobu.resto.Service;
 
 import com.dobudobu.resto.Dto.PaymentDto;
+import com.dobudobu.resto.Dto.PaymentListResponseDto;
 import com.dobudobu.resto.Dto.PaymentResponseDto;
 import com.dobudobu.resto.Entity.*;
 import com.dobudobu.resto.Repository.OrderDetailRepository;
@@ -18,6 +19,8 @@ import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -115,5 +118,28 @@ public class PaymentService {
         Random random = new Random();
         Tables tablesdes = tables.get(random.nextInt(tables.size()));
         return tablesdes;
+    }
+
+    public List<PaymentListResponseDto> getAllPaymentData() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(
+                () -> new UsernameNotFoundException("user not found"));
+
+        List<Payment> payments = paymentRepository.findUser(user.getId());
+
+        List<PaymentListResponseDto> paymentResponseDtos = payments.stream().map((p) -> {
+            PaymentListResponseDto paymentResponse = new PaymentListResponseDto();
+            paymentResponse.setPaymentTotal(p.getPaymentTotal());
+            paymentResponse.setPay(p.getPay());
+            paymentResponse.setChange(p.getChange());
+            paymentResponse.setTableNumber(p.getTables().getTableNumber());
+            paymentResponse.setUser(user.getFirstName());
+            paymentResponse.setOrderDetail(p.getOrderDetail());
+
+            return paymentResponse;
+        }).collect(Collectors.toList());
+
+        return paymentResponseDtos;
     }
 }
