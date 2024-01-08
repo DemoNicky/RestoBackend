@@ -1,6 +1,7 @@
 package com.dobudobu.resto.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,6 +34,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column(name = "email", unique = true, nullable = false)
+    @Email(message = "please enter a Valid email")
     private String email;
 
     @Column(name = "password", nullable = false)

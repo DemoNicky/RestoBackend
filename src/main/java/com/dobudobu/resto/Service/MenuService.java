@@ -12,7 +12,6 @@ import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -126,7 +125,8 @@ public class MenuService {
 
     private Category getCategory1(String idcate) {
         Long cate = Long.parseLong(idcate);
-        Category category = categoryRepository.findById(cate).orElseThrow(() -> new NullPointerException("category tidak di temukan"));
+        Category category = categoryRepository.findById(cate)
+                .orElseThrow(() -> new NullPointerException("category tidak di temukan"));
         return category;
     }
 }

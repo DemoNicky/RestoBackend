@@ -18,11 +18,6 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-//    @GetMapping
-//    private ResponseEntity<String> coba(){
-//        return ResponseEntity.ok("bisa coeg");
-//    }
-
     @PostMapping
     public ResponseEntity<?> insertNewMenu(@RequestParam("name")String name,
                                            @RequestParam("desc")String desc,

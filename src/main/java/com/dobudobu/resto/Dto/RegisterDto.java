@@ -1,5 +1,7 @@
 package com.dobudobu.resto.Dto;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
